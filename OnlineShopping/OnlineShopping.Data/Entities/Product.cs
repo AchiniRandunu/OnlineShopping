@@ -15,9 +15,7 @@ namespace OnlineShopping.Data.Entities
 		public string ProductName { get; set; }
 		public int Quantity { get; set; }
 		public double  Price { get; set; }
-		public string Supplier { get; set; }
-
-		public ICollection<ShoppingCartLineItem> ShoppingCartLineItems { get; set; }
+		public string Description { get; set; }	
 		
 	}
 }

@@ -24,14 +24,11 @@ namespace OnlineShopping.Data
 		{
 		}
 		//entities
-		public DbSet<Account> Accounts { get; set; }
-		public DbSet<Customer> Customers { get; set; }
-		public DbSet<ShoppingCartLineItem> ShoppingCartLineItems { get; set; }
+		public DbSet<Account> Accounts { get; set; }		
 		public DbSet<OrderLineItem> OrderLineItems { get; set; }
 		public DbSet<Order> Orders { get; set; }
 		public DbSet<Payment> Payments { get; set; }
-		public DbSet<Product> Products { get; set; }
-		public DbSet<ShoppingCart> ShoppingCarts { get; set; }
+		public DbSet<Product> Products { get; set; }	
 		public DbSet<User> Users { get; set; }
 
 	}

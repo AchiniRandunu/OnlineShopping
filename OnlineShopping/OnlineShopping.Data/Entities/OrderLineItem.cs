@@ -10,12 +10,10 @@ namespace OnlineShopping.Data.Entities
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public int OrderLineItemID { get; set; }
-		public int ProductID { get; set; }
+		public int OrderLineItemID { get; set; }	
 		public int Quantity { get; set; }
 		public double Price { get; set; }
-		public Product Product { get; set; }
-		public int OderID { get; set; }
+		public Product Product { get; set; }		
 		public Order Order { get; set; }
 		
 		

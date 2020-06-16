@@ -15,7 +15,8 @@ namespace OnlineShopping.Data.Entities
 		public string Description { get; set; }
 		public double TotalPrice { get; set; }
 		public string PaymentStatus { get; set; }
-		public int OrderID { get; set; }
+		public string PaymentMethod { get; set; }
 		public Order Order { get; set; }
+		public Account Account { get; set; }
 	}
 }
