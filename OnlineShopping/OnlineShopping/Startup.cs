@@ -1,15 +1,16 @@
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.SpaServices.AngularCli;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
 using OnlineShopping.Data;
-
+using OnlineShopping.Data.Entities;
 
 namespace OnlineShopping
 {
@@ -25,17 +26,25 @@ namespace OnlineShopping
 		// This method gets called by the runtime. Use this method to add services to the container.
 		public void ConfigureServices(IServiceCollection services)
 		{
+			services.AddDbContext<OnlineShoppingDBContext>(options =>
+				options.UseSqlServer(
+					Configuration.GetConnectionString("DefaultConnection")));
+
+			services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = true)
+				.AddEntityFrameworkStores<OnlineShoppingDBContext>();
+
+			services.AddIdentityServer()
+				.AddApiAuthorization<User, OnlineShoppingDBContext>();
+
+			services.AddAuthentication()
+				.AddIdentityServerJwt();
 			services.AddControllersWithViews();
+			services.AddRazorPages();
 			// In production, the Angular files will be served from this directory
 			services.AddSpaStaticFiles(configuration =>
 			{
 				configuration.RootPath = "ClientApp/dist";
 			});
-
-			services.AddDbContext<OnlineShoppingDBContext>(options =>
-				options.UseSqlServer(
-					Configuration.GetConnectionString("DefaultConnection")));
-
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -44,6 +53,7 @@ namespace OnlineShopping
 			if (env.IsDevelopment())
 			{
 				app.UseDeveloperExceptionPage();
+				app.UseDatabaseErrorPage();
 			}
 			else
 			{
@@ -61,11 +71,15 @@ namespace OnlineShopping
 
 			app.UseRouting();
 
+			app.UseAuthentication();
+			app.UseIdentityServer();
+			app.UseAuthorization();
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllerRoute(
 					name: "default",
 					pattern: "{controller}/{action=Index}/{id?}");
+				endpoints.MapRazorPages();
 			});
 
 			app.UseSpa(spa =>
