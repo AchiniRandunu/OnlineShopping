@@ -11,7 +11,12 @@ namespace OnlineShopping.DTO
 	/// </summary>
 	public class ObjectConverter
 	{
-        public static Product ConvertDGActionsDTOToEntity(ProductDTO dtoItem)
+        /// <summary>
+        /// convert DTO to Entity
+        /// </summary>
+        /// <param name="dtoItem"></param>
+        /// <returns></returns>
+        public static Product ConvertProductDTOToEntity(ProductDTO dtoItem)
         {
             Product entity = new Product();
             if (dtoItem != null)
@@ -26,6 +31,27 @@ namespace OnlineShopping.DTO
             }
 
             return entity;
+        }
+        /// <summary>
+        /// Convert Entity to DTO
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public static ProductDTO ConvertProductEntityToDTO(Product entity)
+        {
+            ProductDTO dtoItem = new ProductDTO();
+            if (entity != null)
+            {
+                dtoItem.ProductID = entity.ProductID;
+                dtoItem.ProductName = entity.ProductName;
+                dtoItem.ProductSKU = entity.ProductSKU;
+                dtoItem.Quantity = entity.Quantity;
+                dtoItem.Price = entity.Price;
+                dtoItem.Description = entity.Description;
+
+            }
+
+            return dtoItem;
         }
     }
 }

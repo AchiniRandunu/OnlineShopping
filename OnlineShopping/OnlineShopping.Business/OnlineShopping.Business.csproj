@@ -4,4 +4,9 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\OnlineShopping.DTO\OnlineShopping.DTO.csproj" />
+    <ProjectReference Include="..\OnlineShopping.Repositories\OnlineShopping.Repositories.csproj" />
+  </ItemGroup>
+
 </Project>

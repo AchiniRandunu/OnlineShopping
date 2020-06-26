@@ -39,6 +39,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\OnlineShopping.Business\OnlineShopping.Business.csproj" />
     <ProjectReference Include="..\OnlineShopping.Data\OnlineShopping.Data.csproj" />
   </ItemGroup>
 
