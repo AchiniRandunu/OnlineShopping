@@ -11,6 +11,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using OnlineShopping.Data;
 using OnlineShopping.Data.Entities;
+using Serilog;
 
 namespace OnlineShopping
 {
@@ -81,7 +82,7 @@ namespace OnlineShopping
 					pattern: "{controller}/{action=Index}/{id?}");
 				endpoints.MapRazorPages();
 			});
-
+			app.UseSerilogRequestLogging();
 			app.UseSpa(spa =>
 			{
 				// To learn more about options for serving an Angular SPA from ASP.NET Core,
