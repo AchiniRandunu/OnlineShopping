@@ -1,4 +1,5 @@
-﻿using OnlineShopping.Business.Interfaces;
+﻿using AutoMapper;
+using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
 using OnlineShopping.Repositories.Implementations;
 using OnlineShopping.Repositories.Interfaces;
@@ -12,15 +13,17 @@ namespace OnlineShopping.Business.Implementations
 	
 	public class ProductService : IProductService
 	{
-		private readonly IProductRepository _productRepository = null;
-		public ProductService(IProductRepository productRepository)
+		private readonly IMapper _mapper = null;
+		private readonly IProductRepository _productRepository = null;		
+		public ProductService(IMapper mapper,IProductRepository productRepository)
 		{
+			mapper = _mapper;
 			productRepository = _productRepository;
 			
 		}
 		public IList<ProductDTO> GetProducts()
 		{
-			return _productRepository.GetAllProducts().Select(v => ObjectConverter.ConvertProductEntityToDTO(v)).ToList();
+			return _productRepository.GetAllProducts().Select(v => _mapper.Map<ProductDTO>(v)).ToList();
 		}
 	}
 }

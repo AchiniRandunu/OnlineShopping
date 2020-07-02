@@ -1,11 +1,6 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Events;
 
@@ -13,11 +8,11 @@ namespace OnlineShopping
 {
 	public class Program
 	{
-		public static void Main(string[] args)
-		{
+        public static void Main(string[] args)
+        {
             Log.Logger = new LoggerConfiguration()
            .MinimumLevel.Debug()
-           .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Debug)           
+           .MinimumLevel.Override("Microsoft.AspNetCore", LogEventLevel.Debug)
            .Enrich.FromLogContext()
            .WriteTo.Console()
            .CreateLogger();
@@ -31,7 +26,7 @@ namespace OnlineShopping
             catch (Exception ex)
             {
                 Log.Fatal(ex, "Host terminated unexpectedly");
-               // return 1;
+                // return 1;
             }
             finally
             {
@@ -39,16 +34,13 @@ namespace OnlineShopping
             }
         }
 
-		public static IHostBuilder CreateHostBuilder(string[] args) =>
-			Host.CreateDefaultBuilder(args)
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
+            Host.CreateDefaultBuilder(args)
             .UseSerilog()
                 .ConfigureWebHostDefaults(webBuilder =>
-				{
-					webBuilder.UseStartup<Startup>();
-				});
-	}
+                {
+                    webBuilder.UseStartup<Startup>();
+                });
+    }
 }
-
-
-
 

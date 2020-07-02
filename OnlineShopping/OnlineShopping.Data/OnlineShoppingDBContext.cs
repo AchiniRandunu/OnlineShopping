@@ -8,15 +8,14 @@ using System.Threading.Tasks;
 using OnlineShopping.Data.Entities;
 using IdentityServer4.EntityFramework.Options;
 using Microsoft.AspNetCore.ApiAuthorization.IdentityServer;
-
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace OnlineShopping.Data
 {
-	public class OnlineShoppingDBContext : ApiAuthorizationDbContext<User>
+	public class OnlineShoppingDBContext : IdentityDbContext
 	{
 		
-		public OnlineShoppingDBContext(DbContextOptions options,
-			IOptions<OperationalStoreOptions> operationalStoreOptions) : base(options, operationalStoreOptions)
+		public OnlineShoppingDBContext(DbContextOptions options) : base(options)
 		{
 		}
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
