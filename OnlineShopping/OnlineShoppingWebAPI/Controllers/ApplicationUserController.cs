@@ -1,15 +1,14 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
 
 namespace OnlineShoppingWebAPI.Controllers
 {
+    /// <summary>
+    /// Apllication user controller
+    /// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ApplicationUserController : ControllerBase
@@ -23,9 +22,13 @@ namespace OnlineShoppingWebAPI.Controllers
             _registrationService = registrationService;
         }
 
+        /// <summary>
+        /// POST : /api/ApplicationUser/Register
+        /// </summary>
+        /// <param name="applicationUserDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("Register")]
-        //POST : /api/ApplicationUser/Register
+        [Route("Register")]        
         public async Task<Object> PostApplicationUser(ApplicationUserDTO applicationUserDto)
         {
             try
@@ -40,9 +43,13 @@ namespace OnlineShoppingWebAPI.Controllers
             }
         }
 
+        /// <summary>
+        ///  POST : /api/ApplicationUser/Login
+        /// </summary>
+        /// <param name="loginDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        [Route("Login")]
-        //POST : /api/ApplicationUser/Login
+        [Route("Login")]       
         public async Task<Object> Login(LoginDTO  loginDto)
         {
             try
@@ -50,9 +57,6 @@ namespace OnlineShoppingWebAPI.Controllers
                 var result = await _loginService.Login(loginDto);
                 if (result != null)
                 {                    
-                    //string userId = User.Claims.First(c => c.Type == "UserID").Value;
-                    //var userDetails = await _loginService.GetUserProfile(userId);                    
-                    //return Ok(new { result,userDetails });
                     return Ok( result);
                 }
                     

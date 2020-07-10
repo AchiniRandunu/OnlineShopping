@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
+﻿using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
-using Serilog;
+
 
 namespace OnlineShoppingWebAPI.Controllers
 {
+    /// <summary>
+    /// Product controller
+    /// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class ProductsController : ControllerBase

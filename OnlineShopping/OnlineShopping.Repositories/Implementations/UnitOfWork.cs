@@ -3,12 +3,14 @@ using Microsoft.EntityFrameworkCore;
 using OnlineShopping.Repositories.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Repositories.Implementations
 {
+	/// <summary>
+	/// Unit of work repository
+	/// </summary>
+	/// <typeparam name="TContext"></typeparam>
 	public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
 	{
 		private readonly TContext _context;

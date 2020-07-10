@@ -1,17 +1,27 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Repositories.Interfaces
 {
+	/// <summary>
+	/// Unit of work interface
+	/// </summary>
 	public interface IUnitOfWork : IDisposable
-	{    
-
+	{
+		
+		/// <summary>
+		/// Begin Transaction
+		/// </summary>
 		void Begin();
 
+		/// <summary>
+		/// Commit Transaction 
+		/// </summary>
 		void Commit();
+
+		/// <summary>
+		/// Rollback Transaction
+		/// </summary>
 		void Rollback();
 	
 

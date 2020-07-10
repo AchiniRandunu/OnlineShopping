@@ -1,10 +1,5 @@
-﻿
-using OnlineShopping.Repositories.Interfaces;
+﻿using OnlineShopping.Repositories.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
@@ -14,14 +9,17 @@ using Microsoft.AspNetCore.Http;
 
 namespace OnlineShopping.Repositories.Implementations
 {
+    /// <summary>
+    /// Repository class
+    /// </summary>
+    /// <typeparam name="TEntity"></typeparam>
 	public class Repository<TEntity> : IRepository<TEntity> where TEntity : class
 	{
         protected readonly DbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
-        private IHttpContextAccessor _httpContextAccessor;       
-    
+        private IHttpContextAccessor _httpContextAccessor;  
 
-        //private readonly ILogger _logger=null;
+      
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
         /// </summary>
@@ -34,6 +32,7 @@ namespace OnlineShopping.Repositories.Implementations
             _dbSet = _dbContext.Set<TEntity>();
             //_logger = logger;
         }
+
         /// <summary>
         /// Get all records based on filter
         /// </summary>
@@ -168,9 +167,7 @@ namespace OnlineShopping.Repositories.Implementations
         public void Insert(TEntity entity)
         {           
             _dbSet.Add(entity);
-        }   
-
-      
+        }     
       
        
         /// <summary>
@@ -184,13 +181,16 @@ namespace OnlineShopping.Repositories.Implementations
            
         }
 
+        /// <summary>
+        /// Upadate and return entity
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
         public TEntity UpdateReturn(TEntity entity)
         {            
             var entry = _dbSet.Update(entity);
             return entry.Entity;
-        }
-
-     
+        }     
 
         /// <summary>
         /// Deletes the specified entity.

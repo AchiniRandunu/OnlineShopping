@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.Business.Interfaces;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace OnlineShoppingWebAPI.Controllers
 {
+    /// <summary>
+    /// User Profile Controller
+    /// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class UserProfileController : ControllerBase
@@ -23,10 +23,12 @@ namespace OnlineShoppingWebAPI.Controllers
 
     }     
 
-
+    /// <summary>
+    /// GET : /api/UserProfile
+    /// </summary>
+    /// <returns></returns>
     [HttpGet]
-    [Authorize]
-    //GET : /api/UserProfile
+    [Authorize]   
     public async Task<Object> GetUserProfile()
     {
         try
