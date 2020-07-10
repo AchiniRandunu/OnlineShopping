@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.DTO", "Onlin
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.Repositories", "OnlineShopping.Repositories\OnlineShopping.Repositories.csproj", "{303056E7-A297-468C-9F9E-1B96534F7E2E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShopping", "OnlineShopping\OnlineShopping.csproj", "{FAFCED4C-71DE-4647-AE3B-4A29E7E6E724}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShoppingWebAPI", "OnlineShoppingWebAPI\OnlineShoppingWebAPI.csproj", "{CA91D32C-9FCF-4B04-8585-CF31575404A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -35,10 +35,10 @@ Global
 		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FAFCED4C-71DE-4647-AE3B-4A29E7E6E724}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FAFCED4C-71DE-4647-AE3B-4A29E7E6E724}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FAFCED4C-71DE-4647-AE3B-4A29E7E6E724}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FAFCED4C-71DE-4647-AE3B-4A29E7E6E724}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -7,6 +7,9 @@ using System.Text;
 
 namespace OnlineShopping.Business
 {
+	/// <summary>
+	/// AutoMapping class for mapping of the entities and DTOs
+	/// </summary>
 	public class AutoMapping :Profile
 	{
 		public AutoMapping()

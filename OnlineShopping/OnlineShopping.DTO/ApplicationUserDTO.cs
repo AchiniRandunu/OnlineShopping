@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace OnlineShopping.DTO
 {
+	/// <summary>
+	/// Application User Dto
+	/// </summary>
 	public class ApplicationUserDTO
 	{
 		public string UserName { get; set; }

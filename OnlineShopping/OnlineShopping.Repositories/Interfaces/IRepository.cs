@@ -21,7 +21,8 @@ namespace OnlineShopping.Repositories.Interfaces
 		////void ChangeTable(string table);
 
 		IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, bool skipBaseProperties = false);
-		
+
+
 
 		/// <summary>
 		/// Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method default no-tracking query.
@@ -54,34 +55,13 @@ namespace OnlineShopping.Repositories.Interfaces
 										   bool disableTracking = true, bool skipBaseProperties = false);
 
 		/// <summary>
-		/// Uses raw SQL queries to fetch the specified <typeparamref name="TEntity" /> data.
-		/// </summary>
-		/// <param name="sql">The raw SQL.</param>
-		/// <param name="parameters">The parameters.</param>
-		/// <returns>An <see cref="IQueryable{TEntity}" /> that contains elements that satisfy the condition specified by raw SQL.</returns>
-		IQueryable<TEntity> FromSql(string sql, params object[] parameters);
-
-		/// <summary>
 		/// Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity is found, then null is returned.
 		/// </summary>
 		/// <param name="keyValues">The values of the primary key for the entity to be found.</param>
 		/// <returns>The found entity or null.</returns>
 		TEntity Find(params object[] keyValues);
 
-		/// <summary>
-		/// Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity is found, then null is returned.
-		/// </summary>
-		/// <param name="keyValues">The values of the primary key for the entity to be found.</param>
-		/// <returns>A <see cref="Task{TEntity}"/> that represents the asynchronous find operation. The task result contains the found entity or null.</returns>
-		Task<TEntity> FindAsync(params object[] keyValues);
-
-		/// <summary>
-		/// Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity is found, then null is returned.
-		/// </summary>
-		/// <param name="keyValues">The values of the primary key for the entity to be found.</param>
-		/// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-		/// <returns>A <see cref="Task{TEntity}"/> that represents the asynchronous find operation. The task result contains the found entity or null.</returns>
-		Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken);
+		
 
 		/// <summary>
 		/// Gets the count based on a predicate.
@@ -90,48 +70,12 @@ namespace OnlineShopping.Repositories.Interfaces
 		/// <returns></returns>
 		int Count(Expression<Func<TEntity, bool>> predicate = null);
 
-		TEntity InsertReturn(TEntity entity);
 
 		/// <summary>
 		/// Inserts a new entity synchronously.
 		/// </summary>
 		/// <param name="entity">The entity to insert.</param>
-		void Insert(TEntity entity);
-
-		/// <summary>
-		/// Inserts a range of entities synchronously.
-		/// </summary>
-		/// <param name="entities">The entities to insert.</param>
-		void Insert(params TEntity[] entities);
-
-		/// <summary>
-		/// Inserts a range of entities synchronously.
-		/// </summary>
-		/// <param name="entities">The entities to insert.</param>
-		void Insert(IEnumerable<TEntity> entities);
-
-		/// <summary>
-		/// Inserts a new entity asynchronously.
-		/// </summary>
-		/// <param name="entity">The entity to insert.</param>
-		/// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-		Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default(CancellationToken));
-
-		/// <summary>
-		/// Inserts a range of entities asynchronously.
-		/// </summary>
-		/// <param name="entities">The entities to insert.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-		Task InsertAsync(params TEntity[] entities);
-
-		/// <summary>
-		/// Inserts a range of entities asynchronously.
-		/// </summary>
-		/// <param name="entities">The entities to insert.</param>
-		/// <param name="cancellationToken">A <see cref="CancellationToken"/> to observe while waiting for the task to complete.</param>
-		/// <returns>A <see cref="Task"/> that represents the asynchronous insert operation.</returns>
-		Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default(CancellationToken));
+		void Insert(TEntity entity);		
 
 		/// <summary>
 		/// Updates the specified entity.
@@ -139,19 +83,7 @@ namespace OnlineShopping.Repositories.Interfaces
 		/// <param name="entity">The entity.</param>
 		void Update(TEntity entity);
 
-		TEntity UpdateReturn(TEntity entity);
-
-		/// <summary>
-		/// Updates the specified entities.
-		/// </summary>
-		/// <param name="entities">The entities.</param>
-		void Update(params TEntity[] entities);
-
-		/// <summary>
-		/// Updates the specified entities.
-		/// </summary>
-		/// <param name="entities">The entities.</param>
-		void Update(IEnumerable<TEntity> entities);
+		TEntity UpdateReturn(TEntity entity);		
 
 		/// <summary>
 		/// Deletes the entity by the specified primary key.
@@ -165,16 +97,6 @@ namespace OnlineShopping.Repositories.Interfaces
 		/// <param name="entity">The entity to delete.</param>
 		void Delete(TEntity entity);
 
-		/// <summary>
-		/// Deletes the specified entities.
-		/// </summary>
-		/// <param name="entities">The entities.</param>
-		void Delete(params TEntity[] entities);
-
-		/// <summary>
-		/// Deletes the specified entities.
-		/// </summary>
-		/// <param name="entities">The entities.</param>
-		void Delete(IEnumerable<TEntity> entities);
+		
 	}
 }

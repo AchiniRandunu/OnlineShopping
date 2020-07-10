@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace OnlineShopping.DTO
 {
+	/// <summary>
+	/// Order Line Item Dto
+	/// </summary>
 	public class OrderLineItemDTO
 	{
 		public int OrderLineItemID { get; set; }

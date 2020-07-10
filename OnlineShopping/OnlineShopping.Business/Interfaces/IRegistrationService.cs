@@ -1,13 +1,19 @@
 ﻿using OnlineShopping.DTO;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Interfaces
 {
+	/// <summary>
+	/// Registration interface
+	/// </summary>
 	public interface IRegistrationService
 	{
+		/// <summary>
+		/// User Register method
+		/// </summary>
+		/// <param name="model"></param>
+		/// <returns></returns>
 		Task<Object> PostApplicationUser(ApplicationUserDTO model);
 	}
 }

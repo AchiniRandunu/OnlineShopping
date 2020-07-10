@@ -4,12 +4,13 @@ using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data.Entities;
 using OnlineShopping.DTO;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Implementations
 {
+	/// <summary>
+	///User Registration service
+	/// </summary>
 	public class RegistrationService : IRegistrationService
 	{
 		private UserManager<ApplicationUser> _userManager;	
@@ -20,6 +21,12 @@ namespace OnlineShopping.Business.Implementations
 			_userManager = userManager;			
 			_appSettings = appSettings.Value;
 		}
+
+		/// <summary>
+		/// Register method
+		/// </summary>
+		/// <param name="applicationUserDto"></param>
+		/// <returns></returns>
 		public async Task<object> PostApplicationUser(ApplicationUserDTO applicationUserDto)
 		{
 			var applicationUser = new ApplicationUser()

@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
+﻿
 namespace OnlineShopping.DTO
 {
+	/// <summary>
+	/// Application settings Dto
+	/// </summary>
 	public class ApplicationSettingsDTO
 	{
 		public string JWT_Secret { get; set; }

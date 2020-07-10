@@ -1,9 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace OnlineShopping.DTO
 {
+	/// <summary>
+	/// Order Dto
+	/// </summary>
 	public class OrderDTO
 	{
 		public int OrderID { get; set; }

@@ -1,12 +1,12 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace OnlineShopping.Data.Entities
 {
+	/// <summary>
+	/// Identity user entity
+	/// </summary>
 	public class ApplicationUser: IdentityUser
 	{
 		public static object Claims { get; set; }

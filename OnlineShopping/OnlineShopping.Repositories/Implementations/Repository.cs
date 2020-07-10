@@ -18,8 +18,9 @@ namespace OnlineShopping.Repositories.Implementations
 	{
         protected readonly DbContext _dbContext;
         protected readonly DbSet<TEntity> _dbSet;
-        private IHttpContextAccessor _httpContextAccessor;
- 
+        private IHttpContextAccessor _httpContextAccessor;       
+    
+
         //private readonly ILogger _logger=null;
         /// <summary>
         /// Initializes a new instance of the <see cref="Repository{TEntity}"/> class.
@@ -40,9 +41,7 @@ namespace OnlineShopping.Repositories.Implementations
         /// <returns></returns>
         public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate = null, bool skipBaseProperties = false)
         {
-            IQueryable<TEntity> query = _dbSet;
-            if (!skipBaseProperties)
-               // query = Helper.Helper.SetBasePropertiesOnGet(query);
+            IQueryable<TEntity> query = _dbSet;           
 
             if (predicate != null)
             {
@@ -50,9 +49,154 @@ namespace OnlineShopping.Repositories.Implementations
             }
 
             return query;
+        }        
+
+        /// <summary>
+        /// Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method default no-tracking query.
+        /// </summary>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <param name="orderBy">A function to order elements.</param>
+        /// <param name="include">A function to include navigation properties</param>
+        /// <param name="disableTracking"><c>True</c> to disable changing tracking; otherwise, <c>false</c>. Default to <c>true</c>.</param>
+        /// <returns>An <see cref="IPagedList{TEntity}"/> that contains elements that satisfy the condition specified by <paramref name="predicate"/>.</returns>
+        /// <remarks>This method default no-tracking query.</remarks>
+        public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate = null,
+                                         Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                         Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+                                         bool disableTracking = true, bool skipBaseProperties = false)
+        {
+            IQueryable<TEntity> query = _dbSet;         
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).FirstOrDefault();
+            }
+            else
+            {
+                return query.FirstOrDefault();
+            }
         }
 
+        /// <summary>
+        /// Gets the first or default entity based on a predicate, orderby delegate and include delegate. This method default no-tracking query.
+        /// </summary>
+        /// <param name="selector">The selector for projection.</param>
+        /// <param name="predicate">A function to test each element for a condition.</param>
+        /// <param name="orderBy">A function to order elements.</param>
+        /// <param name="include">A function to include navigation properties</param>
+        /// <param name="disableTracking"><c>True</c> to disable changing tracking; otherwise, <c>false</c>. Default to <c>true</c>.</param>
+        /// <returns>An <see cref="IPagedList{TEntity}"/> that contains elements that satisfy the condition specified by <paramref name="predicate"/>.</returns>
+        /// <remarks>This method default no-tracking query.</remarks>
+        public TResult GetFirstOrDefault<TResult>(Expression<Func<TEntity, TResult>> selector,
+                                                  Expression<Func<TEntity, bool>> predicate = null,
+                                                  Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
+                                                  Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null,
+                                                  bool disableTracking = true, bool skipBaseProperties = false)
+        {
+            IQueryable<TEntity> query = _dbSet;
+        
 
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (include != null)
+            {
+                query = include(query);
+            }
+
+            if (predicate != null)
+            {
+                query = query.Where(predicate);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).Select(selector).FirstOrDefault();
+            }
+            else
+            {
+                return query.Select(selector).FirstOrDefault();
+            }
+        }
+        
+
+        /// <summary>
+        /// Finds an entity with the given primary key values. If found, is attached to the context and returned. If no entity is found, then null is returned.
+        /// </summary>
+        /// <param name="keyValues">The values of the primary key for the entity to be found.</param>
+        /// <returns>The found entity or null.</returns>
+        public TEntity Find(params object[] keyValues) => _dbSet.Find(keyValues);      
+
+        /// <summary>
+        /// Gets the count based on a predicate.
+        /// </summary>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public int Count(Expression<Func<TEntity, bool>> predicate = null)
+        {
+            if (predicate == null)
+            {
+                return _dbSet.Count();
+            }
+            else
+            {
+                return _dbSet.Count(predicate);
+            }
+        }
+
+        /// <summary>
+        /// Inserts a new entity synchronously.
+        /// </summary>
+        /// <param name="entity">The entity to insert.</param>
+        public void Insert(TEntity entity)
+        {           
+            _dbSet.Add(entity);
+        }   
+
+      
+      
+       
+        /// <summary>
+        /// Updates the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity.</param>
+        public void Update(TEntity entity)
+        {
+         
+            _dbSet.Update(entity);
+           
+        }
+
+        public TEntity UpdateReturn(TEntity entity)
+        {            
+            var entry = _dbSet.Update(entity);
+            return entry.Entity;
+        }
+
+     
+
+        /// <summary>
+        /// Deletes the specified entity.
+        /// </summary>
+        /// <param name="entity">The entity to delete.</param>
+        public void Delete(TEntity entity) => _dbSet.Remove(entity);
 
         /// <summary>
         /// Deletes the entity by the specified primary key.
@@ -79,113 +223,9 @@ namespace OnlineShopping.Repositories.Implementations
                 }
             }
         }
-        /// <summary>
-        /// Deletes the specified entities.
-        /// </summary>
-        /// <param name="entities">The entities.</param>
-        public void Delete(params TEntity[] entities) => _dbSet.RemoveRange(entities);
 
-        /// <summary>
-        /// Deletes the specified entities.
-        /// </summary>
-        /// <param name="entities">The entities.</param>
-        public void Delete(IEnumerable<TEntity> entities) => _dbSet.RemoveRange(entities);
-
-		public TEntity GetFirstOrDefault(Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool skipBaseProperties = false)
-		{
-			throw new NotImplementedException();
-		}
-
-		public TResult GetFirstOrDefault<TResult>(Expression<Func<TEntity, TResult>> selector, Expression<Func<TEntity, bool>> predicate = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, Func<IQueryable<TEntity>, IIncludableQueryable<TEntity, object>> include = null, bool disableTracking = true, bool skipBaseProperties = false)
-		{
-			throw new NotImplementedException();
-		}
-
-		public IQueryable<TEntity> FromSql(string sql, params object[] parameters)
-		{
-			throw new NotImplementedException();
-		}
-
-		public TEntity Find(params object[] keyValues)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TEntity> FindAsync(params object[] keyValues)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task<TEntity> FindAsync(object[] keyValues, CancellationToken cancellationToken)
-		{
-			throw new NotImplementedException();
-		}
-
-		public int Count(Expression<Func<TEntity, bool>> predicate = null)
-		{
-			throw new NotImplementedException();
-		}
-
-		public TEntity InsertReturn(TEntity entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Insert(TEntity entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Insert(params TEntity[] entities)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Insert(IEnumerable<TEntity> entities)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task InsertAsync(TEntity entity, CancellationToken cancellationToken = default)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task InsertAsync(params TEntity[] entities)
-		{
-			throw new NotImplementedException();
-		}
-
-		public Task InsertAsync(IEnumerable<TEntity> entities, CancellationToken cancellationToken = default)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Update(TEntity entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public TEntity UpdateReturn(TEntity entity)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Update(params TEntity[] entities)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Update(IEnumerable<TEntity> entities)
-		{
-			throw new NotImplementedException();
-		}
-
-		public void Delete(TEntity entity)
-		{
-			throw new NotImplementedException();
-		}
-	}
+   
+    }
 
 
 }

@@ -2,10 +2,13 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace OnlineShopping.Data.Entities
 {
+	/// <summary>
+	/// Order entity class
+	/// </summary>
 	public class Order
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]

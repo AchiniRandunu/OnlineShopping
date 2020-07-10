@@ -1,11 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace OnlineShopping.Data.Entities
 {
+	/// <summary>
+	/// Payment entity
+	/// </summary>
 	public class Payment
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
