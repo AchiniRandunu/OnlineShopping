@@ -2,6 +2,7 @@
 using System.Linq;
 using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
 using Serilog;
@@ -16,9 +17,11 @@ namespace OnlineShoppingWebAPI.Controllers
 	public class ProductsController : ControllerBase
     {
         private readonly IProductService _productService = null;
-        public ProductsController(IProductService productService)
+        Serilog.ILogger _logger = null;
+        public ProductsController(IProductService productService, Serilog.ILogger logger)
         {
             _productService = productService;
+            _logger = logger;
         }
 
         /// <summary>
@@ -32,7 +35,7 @@ namespace OnlineShoppingWebAPI.Controllers
             var productDto = _productService.GetProducts();
             if(productDto.ToList().Count>0)
 			{
-                Log.Information("Get All Prodcuts completed!");
+                _logger.Information("Get All Prodcuts completed!");                
                 return new ResponseDTO()
                 {
                     Data = productDto,
@@ -61,7 +64,7 @@ namespace OnlineShoppingWebAPI.Controllers
             var productDto = _productService.GetProductByID(productId);
             if (productDto != null)
             {
-                Log.Information("Get Prodcut by ID completed!");
+                _logger.Information("Get Prodcut by ID completed!");
                 return new ResponseDTO()
                 {
                     Data = productDto,
@@ -73,7 +76,7 @@ namespace OnlineShoppingWebAPI.Controllers
             }
 			else
 			{
-                Log.Information("Get Prodcut by ID Failed!");
+                _logger.Error("Get Prodcut by ID Failed!");
                 return new ResponseDTO()
                 {
                     Data = null,

@@ -33,7 +33,7 @@ namespace NUnitTestOnlineShopping
 			products = new List<Product>();
 			products.Add(new Product()
 			{
-				ProductID = 1,
+				Id = 1,
 				ProductSKU = "001",
 				ProductName = "Cooker",
 				Quantity = 100,
@@ -45,7 +45,7 @@ namespace NUnitTestOnlineShopping
 
 			products.Add(new Product()
 			{
-				ProductID = 2,
+				Id = 2,
 				ProductSKU = "002",
 				ProductName = "Toaster",
 				Quantity = 100,
@@ -57,7 +57,7 @@ namespace NUnitTestOnlineShopping
 
 			products.Add(new Product()
 			{
-				ProductID = 3,
+				Id = 3,
 				ProductSKU = "003",
 				ProductName = "FlowerVass",
 				Quantity = 200,

@@ -6,7 +6,7 @@ namespace OnlineShopping.DTO
 	/// </summary>
 	public class ProductDTO
 	{
-		public int ProductID { get; set; }
+		public int Id { get; set; }
 		public string ProductSKU { get; set; }
 		public string ProductName { get; set; }
 		public int Quantity { get; set; }

@@ -8,24 +8,21 @@ namespace OnlineShopping.Data.Repositories.Implementations
 	/// <summary>
 	/// Product repository
 	/// </summary>
-	public class ProductRepository : IProductRepository
+	public class ProductRepository : Repository<Product>, IProductRepository
 	{
-		private IUnitOfWork _unitOfWork = null;
-
-
-		public ProductRepository(IUnitOfWork unitOfWork)
+		private readonly OnlineShoppingDBContext _dbContext;
+		public ProductRepository(OnlineShoppingDBContext dbContext) : base(dbContext)
 		{
-			_unitOfWork = unitOfWork;
+			_dbContext = dbContext;
 		}
 
 		/// <summary>
 		/// Get all products
 		/// </summary>
 		/// <returns></returns>
-		public IQueryable<Product> GetAllProducts()
-		{
-			return _unitOfWork.GetRepository<Product>().GetAll();
+		IQueryable<Product> IProductRepository.GetAllProducts()
+		{			
+			return _dbContext.Products.AsQueryable();				
 		}
-
 	}
 }

@@ -9,32 +9,46 @@ namespace OnlineShopping.Data.Repositories.Implementations
 {
 	/// <summary>
 	/// Unit of work repository
-	/// </summary>
-	/// <typeparam name="TContext"></typeparam>
-	public class UnitOfWork<TContext> : IUnitOfWork where TContext : DbContext
-	{
-		private readonly TContext _context;
-		private bool disposed = false;
-		private Dictionary<Type, object> repositories;
-		private IHttpContextAccessor _httpContextAccessor;
+	/// </summary>	
+	public class UnitOfWork<TContext> : IUnitOfWork
+	{	
 	
-		/// <summary>
-		/// Initializes a new instance of the <see cref="UnitOfWork{TContext}"/> class.
-		/// </summary>
-		/// <param name="context">The context.</param>
-		public UnitOfWork(TContext context, IHttpContextAccessor httpContextAccessor)		{
-			
-			_httpContextAccessor = httpContextAccessor;
-			_context = context ?? throw new ArgumentNullException(nameof(context));
-			
+		public IProductRepository _proudcts = null;
+		private readonly OnlineShoppingDBContext _dbContext;
+
+		public UnitOfWork(OnlineShoppingDBContext dbContext)
+		{
+			_dbContext = dbContext;
 		}
+
+		public IProductRepository Proudcts
+		{
+			get
+			{
+				if (_proudcts == null)
+					_proudcts = new ProductRepository(_dbContext);
+				return _proudcts;
+			}
+		}
+
+
+		public void Save()
+		{
+			_dbContext.SaveChanges();
+		}
+
+		public async Task SaveAsync()
+		{
+			await _dbContext.SaveChangesAsync();
+		}
+
 
 		/// <summary>
 		/// Begin Transaction
 		/// </summary>
 		public void Begin()
 		{
-			_context.Database.BeginTransaction();
+			_dbContext.Database.BeginTransaction();		
 		}
 
 		/// <summary>
@@ -42,7 +56,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// </summary>
 		public void Commit()
 		{
-			_context.Database.CommitTransaction();
+			_dbContext.Database.CommitTransaction();
 
 		}
 
@@ -51,36 +65,8 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// </summary>
 		public void Rollback()
 		{
-			_context.Database.RollbackTransaction();
-		}
-
-		/// <summary>
-		/// Gets the db context.
-		/// </summary>
-		/// <returns>The instance of type <typeparamref name="TContext"/>.</returns>
-		public TContext DbContext => _context;
-
-		
-		/// <summary>
-		/// Gets the specified repository for the <typeparamref name="TEntity"/>.
-		/// </summary>
-		/// <typeparam name="TEntity">The type of the entity.</typeparam>
-		/// <returns>An instance of type inherited from <see cref="IRepository{TEntity}"/> interface.</returns>
-		public IRepository<TEntity> GetRepository<TEntity>() where TEntity : class
-		{
-			if (repositories == null)
-			{
-				repositories = new Dictionary<Type, object>();
-			}
-
-			var type = typeof(TEntity);
-			if (!repositories.ContainsKey(type))
-			{
-				repositories[type] = new Repository<TEntity>(_context, _httpContextAccessor);
-			}
-
-			return (IRepository<TEntity>)repositories[type];
-		}
+			_dbContext.Database.RollbackTransaction();
+		}	
 
 
 		/// <summary>
@@ -91,7 +77,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		public int SaveChanges(bool ensureAutoHistory = false)
 		{		
 
-			var result = _context.SaveChanges();			
+			var result = _dbContext.SaveChanges();			
 			return result;
 		}
 
@@ -102,7 +88,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous save operation. The task result contains the number of state entities written to database.</returns>
 		public async Task<int> SaveChangesAsync(bool ensureAutoHistory = false)
 		{
-			var result = await _context.SaveChangesAsync();			
+			var result = await _dbContext.SaveChangesAsync();			
 			return result;
 		}
 
@@ -115,7 +101,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		public async Task<int> SaveChangesAsync(bool ensureAutoHistory = false, params IUnitOfWork[] unitOfWorks)
 		{
 			// TransactionScope will be included in .NET Core v2.0
-			using (var transaction = _context.Database.BeginTransaction())
+			using (var transaction = _dbContext.Database.BeginTransaction())
 			{
 				try
 				{
@@ -143,38 +129,12 @@ namespace OnlineShopping.Data.Repositories.Implementations
 			}
 		}
 
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
 		public void Dispose()
 		{
-			Dispose(true);
-
-			GC.SuppressFinalize(this);
+			throw new NotImplementedException();
 		}
 
-		/// <summary>
-		/// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
-		/// </summary>
-		/// <param name="disposing">The disposing.</param>
-		protected virtual void Dispose(bool disposing)
-		{
-			if (!disposed)
-			{
-				if (disposing)
-				{
-					// clear repositories
-					if (repositories != null)
-					{
-						repositories.Clear();
-					}
+		
 
-					// dispose the db context.
-					_context.Dispose();
-				}
-			}
-
-			disposed = true;
-		}
 	}
 }

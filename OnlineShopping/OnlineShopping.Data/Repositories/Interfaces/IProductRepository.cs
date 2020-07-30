@@ -7,7 +7,7 @@ namespace OnlineShopping.Data.Repositories.Interfaces
 	/// <summary>
 	/// Product Repository interface
 	/// </summary>
-	public interface IProductRepository
+	public interface IProductRepository:IRepository<Product>
 	{
 		/// <summary>
 		/// Get all Products

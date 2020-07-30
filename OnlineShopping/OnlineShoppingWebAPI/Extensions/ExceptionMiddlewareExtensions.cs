@@ -11,9 +11,9 @@ namespace OnlineShoppingWebAPI.Extensions
     /// Handle exception from one location
     /// </summary>
     public static class ExceptionMiddlewareExtensions
-    {
+    {        
         public static void ConfigureExceptionHandler(this IApplicationBuilder app)
-        {
+        {            
             app.UseExceptionHandler(appError =>
             {
                 appError.Run(async context =>
@@ -23,7 +23,7 @@ namespace OnlineShoppingWebAPI.Extensions
 
                     var contextFeature = context.Features.Get<IExceptionHandlerFeature>();
                     if (contextFeature != null)
-                    {                        
+                    {
                         Log.Error($"Something went wrong: {contextFeature.Error}");
 
                         await context.Response.WriteAsync(new ErrorDetails()

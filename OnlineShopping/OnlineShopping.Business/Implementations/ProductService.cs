@@ -28,6 +28,7 @@ namespace OnlineShopping.Business.Implementations
 		/// <returns></returns>
 		public IList<ProductDTO> GetProducts()
 		{			
+
 			return _productRepository.GetAllProducts().Select(v => _mapper.Map<ProductDTO>(v)).ToList();
 			
 		}
@@ -39,7 +40,7 @@ namespace OnlineShopping.Business.Implementations
 		/// <returns></returns>
 		public ProductDTO GetProductByID(int id)
 		{
-			return _productRepository.GetAllProducts().Where(p => p.ProductID == id).Select(v => _mapper.Map<ProductDTO>(v)).FirstOrDefault();
+			return _productRepository.GetAllProducts().Where(p => p.Id == id).Select(v => _mapper.Map<ProductDTO>(v)).FirstOrDefault();
 		}
 	}
 }
