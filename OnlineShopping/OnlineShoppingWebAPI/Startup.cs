@@ -15,11 +15,11 @@ using AutoMapper;
 using OnlineShopping.Business;
 using OnlineShopping.DTO;
 using Serilog;
-using OnlineShopping.Repositories.Interfaces;
-using OnlineShopping.Repositories.Implementations;
+using OnlineShopping.Data.Repositories.Interfaces;
+using OnlineShopping.Data.Repositories.Implementations;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Business.Implementations;
-
+using OnlineShoppingWebAPI.Extensions;
 
 namespace OnlineShoppingWebAPI
 {
@@ -37,9 +37,7 @@ namespace OnlineShoppingWebAPI
 		{
 			services.AddControllers();
 			//Inject AppSettings
-			services.Configure<ApplicationSettingsDTO>(Configuration.GetSection("ApplicationSettings"));
-
-			//services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
+			services.Configure<ApplicationSettingsDTO>(Configuration.GetSection("ApplicationSettings"));			
 
 			services.AddDbContext<OnlineShoppingDBContext>(options =>
 			options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -127,7 +125,8 @@ namespace OnlineShoppingWebAPI
 			app.UseAuthentication();
 			app.UseSerilogRequestLogging();
 
-
+			//error handling static method injecting
+			app.ConfigureExceptionHandler();
 			app.UseRouting();
 
 			app.UseAuthorization();

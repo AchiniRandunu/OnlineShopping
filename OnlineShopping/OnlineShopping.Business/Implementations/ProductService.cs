@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
-using OnlineShopping.Repositories.Interfaces;
+using OnlineShopping.Data.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -29,6 +29,17 @@ namespace OnlineShopping.Business.Implementations
 		public IList<ProductDTO> GetProducts()
 		{			
 			return _productRepository.GetAllProducts().Select(v => _mapper.Map<ProductDTO>(v)).ToList();
+			
+		}
+
+		/// <summary>
+		/// Get Product by ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		public ProductDTO GetProductByID(int id)
+		{
+			return _productRepository.GetAllProducts().Where(p => p.ProductID == id).Select(v => _mapper.Map<ProductDTO>(v)).FirstOrDefault();
 		}
 	}
 }

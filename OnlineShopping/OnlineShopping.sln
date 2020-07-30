@@ -9,9 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.Business", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.DTO", "OnlineShopping.DTO\OnlineShopping.DTO.csproj", "{1D1270F1-8BEF-4C36-8488-7E14A4ED5783}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShopping.Repositories", "OnlineShopping.Repositories\OnlineShopping.Repositories.csproj", "{303056E7-A297-468C-9F9E-1B96534F7E2E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OnlineShoppingWebAPI", "OnlineShoppingWebAPI\OnlineShoppingWebAPI.csproj", "{CA91D32C-9FCF-4B04-8585-CF31575404A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShoppingWebAPI", "OnlineShoppingWebAPI\OnlineShoppingWebAPI.csproj", "{CA91D32C-9FCF-4B04-8585-CF31575404A3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OnlineShopping.NUnitTest", "NUnitTestOnlineShopping\OnlineShopping.NUnitTest.csproj", "{8ED774E2-42A0-4470-A9E0-0E75C3ED761E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,14 +31,14 @@ Global
 		{1D1270F1-8BEF-4C36-8488-7E14A4ED5783}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1D1270F1-8BEF-4C36-8488-7E14A4ED5783}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1D1270F1-8BEF-4C36-8488-7E14A4ED5783}.Release|Any CPU.Build.0 = Release|Any CPU
-		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{303056E7-A297-468C-9F9E-1B96534F7E2E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{CA91D32C-9FCF-4B04-8585-CF31575404A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8ED774E2-42A0-4470-A9E0-0E75C3ED761E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8ED774E2-42A0-4470-A9E0-0E75C3ED761E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8ED774E2-42A0-4470-A9E0-0E75C3ED761E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8ED774E2-42A0-4470-A9E0-0E75C3ED761E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

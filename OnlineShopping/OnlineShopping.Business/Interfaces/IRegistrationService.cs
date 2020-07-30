@@ -14,6 +14,6 @@ namespace OnlineShopping.Business.Interfaces
 		/// </summary>
 		/// <param name="model"></param>
 		/// <returns></returns>
-		Task<Object> PostApplicationUser(ApplicationUserDTO model);
+		Task<Object> Register(ApplicationUserDTO model);
 	}
 }

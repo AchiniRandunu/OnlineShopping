@@ -14,5 +14,12 @@ namespace OnlineShopping.Business.Interfaces
 		/// </summary>
 		/// <returns></returns>
 		IList<ProductDTO> GetProducts();
+
+		/// <summary>
+		/// Get Product by ID
+		/// </summary>
+		/// <param name="id"></param>
+		/// <returns></returns>
+		ProductDTO GetProductByID(int id);
 	}
 }

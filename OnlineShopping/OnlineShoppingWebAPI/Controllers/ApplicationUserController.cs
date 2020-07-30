@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
+using Serilog;
 
 namespace OnlineShoppingWebAPI.Controllers
 {
@@ -13,6 +14,7 @@ namespace OnlineShoppingWebAPI.Controllers
 	[ApiController]
 	public class ApplicationUserController : ControllerBase
     {
+        
         private readonly ILoginService _loginService = null;
         private readonly IRegistrationService _registrationService = null;
 
@@ -29,18 +31,12 @@ namespace OnlineShoppingWebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Register")]        
-        public async Task<Object> PostApplicationUser(ApplicationUserDTO applicationUserDto)
-        {
-            try
-            {
-                var result = await _registrationService.PostApplicationUser(applicationUserDto);
+        public async Task<Object> Register(ApplicationUserDTO applicationUserDto)
+        {           
+                var result = await _registrationService.Register(applicationUserDto);
+                Log.Information("register completed!");
                 return Ok(result);
-            }
-            catch (Exception ex)
-            {
-
-                throw ex;
-            }
+           
         }
 
         /// <summary>
@@ -51,25 +47,21 @@ namespace OnlineShoppingWebAPI.Controllers
         [HttpPost]
         [Route("Login")]       
         public async Task<Object> Login(LoginDTO  loginDto)
-        {
-            try
-            {               
+        {                          
                 var result = await _loginService.Login(loginDto);
                 if (result != null)
-                {                    
+                {
+                    Log.Information("Login completed!");
                     return Ok( result);
+                   
                 }
                     
                 else
+				{
+                    Log.Information("Login Unsuccessfull!");
                     return BadRequest(new { message = "Username or password is incorrect." });
-
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-
-
-            }
+                }           
+           
 
         }
     }

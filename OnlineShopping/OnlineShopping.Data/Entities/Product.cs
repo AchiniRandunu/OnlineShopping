@@ -17,6 +17,8 @@ namespace OnlineShopping.Data.Entities
 		public int Quantity { get; set; }
 		public double  Price { get; set; }
 		public string Description { get; set; }
-	
+		public string ImageName { get; set; }
+		public int CategoryID { get; set; }
+
 	}
 }

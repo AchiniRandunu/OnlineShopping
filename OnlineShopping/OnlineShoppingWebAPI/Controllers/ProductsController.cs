@@ -1,8 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
+using System.Net;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
-
+using Serilog;
 
 namespace OnlineShoppingWebAPI.Controllers
 {
@@ -25,11 +27,62 @@ namespace OnlineShoppingWebAPI.Controllers
         /// <returns></returns>
         [HttpGet]
         [Route("GetAllActiveProducts")]
-        public IList<ProductDTO> GetAllActiveProducts()
+        public ResponseDTO GetAllActiveProducts()
         {
-            return _productService.GetProducts();
+            var productDto = _productService.GetProducts();
+            if(productDto.ToList().Count>0)
+			{
+                Log.Information("Get All Prodcuts completed!");
+                return new ResponseDTO()
+                {
+                    Data = productDto,
+                    ErrorDescription = "",
+                    Statuscode = "",
+                };
+            }
+            else
+                return new ResponseDTO()
+                {
+                    Data = null,
+                    ErrorDescription = "Data not Found",
+                    Statuscode = HttpStatusCode.BadRequest.ToString(),
+                };
+
         }
 
+        /// <summary>
+        /// Get product by ID
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [Route("GetProductById/{productId}")]
+        public ResponseDTO GetProductById(int productId)
+        {
+            var productDto = _productService.GetProductByID(productId);
+            if (productDto != null)
+            {
+                Log.Information("Get Prodcut by ID completed!");
+                return new ResponseDTO()
+                {
+                    Data = productDto,
+                    ErrorDescription = "",
+                    Statuscode = "",
+                };
+               
+                
+            }
+			else
+			{
+                Log.Information("Get Prodcut by ID Failed!");
+                return new ResponseDTO()
+                {
+                    Data = null,
+                    ErrorDescription = "Data not Found",
+                    Statuscode = HttpStatusCode.BadRequest.ToString(),
+                };
+
+            }
+        }
 
     }
 }

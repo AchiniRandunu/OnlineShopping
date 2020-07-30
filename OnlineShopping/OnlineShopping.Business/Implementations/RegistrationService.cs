@@ -27,7 +27,7 @@ namespace OnlineShopping.Business.Implementations
 		/// </summary>
 		/// <param name="applicationUserDto"></param>
 		/// <returns></returns>
-		public async Task<object> PostApplicationUser(ApplicationUserDTO applicationUserDto)
+		public async Task<object> Register(ApplicationUserDTO applicationUserDto)
 		{
 			var applicationUser = new ApplicationUser()
 			{
@@ -35,17 +35,10 @@ namespace OnlineShopping.Business.Implementations
 				Email = applicationUserDto.Email,
 				FullName = applicationUserDto.FullName
 			};
-
-			try
-			{
-				var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
-				return (result);
-			}
-			catch (Exception ex)
-			{
-
-				throw ex;
-			}
+			
+			var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
+			return (result);
+			
 		}
 	}
 }
