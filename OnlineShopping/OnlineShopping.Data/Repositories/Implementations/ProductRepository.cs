@@ -1,6 +1,5 @@
 ﻿using OnlineShopping.Data.Entities;
 using OnlineShopping.Data.Repositories.Interfaces;
-using System.Linq;
 
 
 namespace OnlineShopping.Data.Repositories.Implementations
@@ -20,9 +19,9 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// Get all products
 		/// </summary>
 		/// <returns></returns>
-		IQueryable<Product> IProductRepository.GetAllProducts()
-		{			
-			return _dbContext.Products.AsQueryable();				
-		}
+		//IQueryable<Product> IProductRepository.GetAllProducts()
+		//{			
+		//	return _dbContext.Products.AsQueryable();				
+		//}
 	}
 }

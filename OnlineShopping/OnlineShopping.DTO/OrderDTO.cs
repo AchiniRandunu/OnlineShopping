@@ -7,7 +7,7 @@ namespace OnlineShopping.DTO
 	/// </summary>
 	public class OrderDTO
 	{
-		public int OrderID { get; set; }
+		public int Id { get; set; }
 		public DateTime OrderDate { get; set; }
 		public DateTime ShippedDate { get; set; }
 		public string ShipAddress { get; set; }

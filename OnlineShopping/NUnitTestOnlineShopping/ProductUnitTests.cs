@@ -7,7 +7,7 @@ using OnlineShopping.Data.Entities;
 using OnlineShopping.Data.Repositories.Interfaces;
 using System.Collections.Generic;
 using System.Linq;
-
+using System.Threading.Tasks;
 
 namespace NUnitTestOnlineShopping
 {
@@ -21,6 +21,7 @@ namespace NUnitTestOnlineShopping
 		private IMapper mapper;
 		private IList<Product> products;
 
+
 		[SetUp]
 		public void Setup()
 		{
@@ -31,6 +32,7 @@ namespace NUnitTestOnlineShopping
 			mapper = mockMapper.CreateMapper();
 			productRepository = new Mock<IProductRepository>();
 			products = new List<Product>();
+			//move to method
 			products.Add(new Product()
 			{
 				Id = 1,
@@ -67,6 +69,8 @@ namespace NUnitTestOnlineShopping
 				CategoryID = 2
 			});
 
+
+
 		}
 
 		[TearDown]
@@ -79,10 +83,10 @@ namespace NUnitTestOnlineShopping
 		/// Get All Product test
 		/// </summary>
 		[Test]
-		public void Test_GetProducts()
+		public void Test_GetProducts_Count()
 		{
 			//Act
-			productRepository.Setup(a => a.GetAllProducts()).Returns(products.AsQueryable());
+			productRepository.Setup(a => a.GetAll()).Returns((Task.FromResult(products.ToList())));
 
 			//Arrange
 			var productService = new ProductService(mapper, productRepository.Object);
@@ -96,11 +100,11 @@ namespace NUnitTestOnlineShopping
 		/// Get Product by ID Test
 		/// </summary>
 		[Test]
-		public void Test_GetProductByID()
+		public void Test_Product_Name_ByID()
 		{
 			//Act
 			var id = 1;
-			productRepository.Setup(a => a.GetAllProducts()).Returns(products.AsQueryable());
+			productRepository.Setup(a => a.GetAll()).Returns((Task.FromResult(products.ToList())));
 
 			//Arrange
 			var productService = new ProductService(mapper, productRepository.Object);

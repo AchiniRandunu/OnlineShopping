@@ -1,4 +1,5 @@
-﻿using System;
+﻿using OnlineShopping.Data.Common;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -9,11 +10,11 @@ namespace OnlineShopping.Data.Entities
 	/// <summary>
 	/// Order entity class
 	/// </summary>
-	public class Order
+	public class Order : IEntity
 	{
 		[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
 		[Key]
-		public int OrderID { get; set; }
+		public int Id { get; set; }
 		public DateTime OrderDate { get; set; }
 		public DateTime ShippedDate { get; set; }
 		public string ShipAddress { get; set; }

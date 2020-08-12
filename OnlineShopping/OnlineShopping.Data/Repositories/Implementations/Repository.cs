@@ -1,16 +1,16 @@
-﻿using OnlineShopping.Data.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineShopping.Data.Common;
+using OnlineShopping.Data.Repositories.Interfaces;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OnlineShopping.Data.Repositories.Implementations
 {
     /// <summary>
-    /// Repository class
+    /// Repository
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
-	public class Repository<T> : IRepository<T> where T : class, IEntity
+    public class Repository<T> : IRepository<T> where T : class, IEntity
     {
         private readonly OnlineShoppingDBContext _dbContext;
         private readonly DbSet<T> _dbSet;
@@ -44,12 +44,14 @@ namespace OnlineShopping.Data.Repositories.Implementations
         public T Save(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Added;
+            _dbContext.SaveChanges();
             return entity;
         }
 
         public T Update(T entity)
         {
             _dbContext.Entry(entity).State = EntityState.Modified;
+            _dbContext.SaveChanges();
             return entity;
         }
     }

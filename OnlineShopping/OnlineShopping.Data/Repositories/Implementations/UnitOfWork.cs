@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using OnlineShopping.Data.Repositories.Interfaces;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Data.Repositories.Implementations
@@ -11,10 +9,15 @@ namespace OnlineShopping.Data.Repositories.Implementations
 	/// Unit of work repository
 	/// </summary>	
 	public class UnitOfWork<TContext> : IUnitOfWork
-	{	
-	
-		public IProductRepository _proudcts = null;
+	{
+
+
 		private readonly OnlineShoppingDBContext _dbContext;
+		public IProductRepository _proudcts = null;
+		public IOrderRepository _orders = null;
+		public IOrderLineItemsRepository _orderLineItems = null;
+		public IAccountRepository _accounts = null;
+		public IPaymentRepository _payments = null;
 
 		public UnitOfWork(OnlineShoppingDBContext dbContext)
 		{
@@ -31,6 +34,73 @@ namespace OnlineShopping.Data.Repositories.Implementations
 			}
 		}
 
+		public IOrderRepository Orders
+		{
+			get
+			{
+				if (_orders == null)
+					_orders = new OrderRepository(_dbContext);
+				return _orders;
+			}
+
+			set
+			{
+				if (_orders == null)
+					_orders = new OrderRepository(_dbContext);
+
+			}
+		}
+
+		public IOrderLineItemsRepository OrderLineItems
+		{
+			get
+			{
+				if (_orderLineItems == null)
+					_orderLineItems = new OrderLineItemsRepository(_dbContext);
+				return _orderLineItems;
+			}
+
+			set
+			{
+				if (_orderLineItems == null)
+					_orderLineItems = new OrderLineItemsRepository(_dbContext);
+
+			}
+
+		}
+
+		public IAccountRepository Accounts
+		{
+			get
+			{
+				if (_accounts == null)
+					_accounts = new AccountRepository(_dbContext);
+				return _accounts;
+			}
+
+			set
+			{
+				if (_accounts == null)
+					_accounts = new AccountRepository(_dbContext);
+			}
+
+		}
+
+		public IPaymentRepository Payments
+		{
+			get
+			{
+				if (_payments == null)
+					_payments = new PaymentRepository(_dbContext);
+				return _payments;
+			}
+
+			set
+			{
+				if (_payments == null)
+					_payments = new PaymentRepository(_dbContext);
+			}
+		}
 
 		public void Save()
 		{
@@ -48,7 +118,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// </summary>
 		public void Begin()
 		{
-			_dbContext.Database.BeginTransaction();		
+			_dbContext.Database.BeginTransaction();
 		}
 
 		/// <summary>
@@ -66,7 +136,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		public void Rollback()
 		{
 			_dbContext.Database.RollbackTransaction();
-		}	
+		}
 
 
 		/// <summary>
@@ -75,9 +145,9 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// <param name="ensureAutoHistory"><c>True</c> if save changes ensure auto record the change history.</param>
 		/// <returns>The number of state entries written to the database.</returns>
 		public int SaveChanges(bool ensureAutoHistory = false)
-		{		
+		{
 
-			var result = _dbContext.SaveChanges();			
+			var result = _dbContext.SaveChanges();
 			return result;
 		}
 
@@ -88,7 +158,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		/// <returns>A <see cref="Task{TResult}"/> that represents the asynchronous save operation. The task result contains the number of state entities written to database.</returns>
 		public async Task<int> SaveChangesAsync(bool ensureAutoHistory = false)
 		{
-			var result = await _dbContext.SaveChangesAsync();			
+			var result = await _dbContext.SaveChangesAsync();
 			return result;
 		}
 
@@ -134,7 +204,7 @@ namespace OnlineShopping.Data.Repositories.Implementations
 			throw new NotImplementedException();
 		}
 
-		
+
 
 	}
 }

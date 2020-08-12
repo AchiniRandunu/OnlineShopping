@@ -8,7 +8,7 @@ namespace OnlineShopping.Data.Repositories.Interfaces
 	/// </summary>
 	public interface IUnitOfWork : IDisposable
 	{
-		
+
 		/// <summary>
 		/// Begin Transaction
 		/// </summary>
@@ -23,7 +23,7 @@ namespace OnlineShopping.Data.Repositories.Interfaces
 		/// Rollback Transaction
 		/// </summary>
 		void Rollback();
-	
+
 
 		///// <summary>
 		///// Gets the specified repository for the <typeparamref name="TEntity"/>.
@@ -47,7 +47,10 @@ namespace OnlineShopping.Data.Repositories.Interfaces
 		Task<int> SaveChangesAsync(bool ensureAutoHistory = false);
 
 		IProductRepository Proudcts { get; }
-
+		IOrderRepository Orders { get; }
+		IOrderLineItemsRepository OrderLineItems { get; }
+		IAccountRepository Accounts { get; }
+		IPaymentRepository Payments { get; }
 
 	}
 }

@@ -7,7 +7,7 @@ namespace OnlineShopping.DTO
 	/// </summary>
 	public class PaymentDTO
 	{
-		public int PaymentID { get; set; }
+		public int Id { get; set; }
 		public DateTime PaidDate { get; set; }
 		public string Description { get; set; }
 		public double TotalPrice { get; set; }

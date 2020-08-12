@@ -2,31 +2,31 @@
 
 namespace OnlineShopping.Data.Migrations
 {
-    public partial class ProductImagesAdded : Migration
-    {
-        protected override void Up(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.AddColumn<int>(
-                name: "CategoryID",
-                table: "Products",
-                nullable: false,
-                defaultValue: 0);
+	public partial class ProductImagesAdded : Migration
+	{
+		protected override void Up(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.AddColumn<int>(
+				name: "CategoryID",
+				table: "Products",
+				nullable: false,
+				defaultValue: 0);
 
-            migrationBuilder.AddColumn<string>(
-                name: "PhotoName",
-                table: "Products",
-                nullable: true);
-        }
+			migrationBuilder.AddColumn<string>(
+				name: "PhotoName",
+				table: "Products",
+				nullable: true);
+		}
 
-        protected override void Down(MigrationBuilder migrationBuilder)
-        {
-            migrationBuilder.DropColumn(
-                name: "CategoryID",
-                table: "Products");
+		protected override void Down(MigrationBuilder migrationBuilder)
+		{
+			migrationBuilder.DropColumn(
+				name: "CategoryID",
+				table: "Products");
 
-            migrationBuilder.DropColumn(
-                name: "PhotoName",
-                table: "Products");
-        }
-    }
+			migrationBuilder.DropColumn(
+				name: "PhotoName",
+				table: "Products");
+		}
+	}
 }

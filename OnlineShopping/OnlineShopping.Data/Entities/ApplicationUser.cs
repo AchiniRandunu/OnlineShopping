@@ -7,7 +7,7 @@ namespace OnlineShopping.Data.Entities
 	/// <summary>
 	/// Identity user entity
 	/// </summary>
-	public class ApplicationUser: IdentityUser
+	public class ApplicationUser : IdentityUser
 	{
 		public static object Claims { get; set; }
 		[Column(TypeName = "nvarchar(150)")]

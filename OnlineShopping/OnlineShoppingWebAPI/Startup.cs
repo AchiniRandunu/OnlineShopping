@@ -1,3 +1,5 @@
+using AutoMapper;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
@@ -5,21 +7,19 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using OnlineShopping.Business;
+using OnlineShopping.Business.Implementations;
+using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data;
 using OnlineShopping.Data.Entities;
+using OnlineShopping.Data.Repositories.Implementations;
+using OnlineShopping.Data.Repositories.Interfaces;
+using OnlineShopping.DTO;
+using OnlineShoppingWebAPI.Extensions;
+using Serilog;
 using System;
 using System.Text;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using AutoMapper;
-using OnlineShopping.Business;
-using OnlineShopping.DTO;
-using Serilog;
-using OnlineShopping.Data.Repositories.Interfaces;
-using OnlineShopping.Data.Repositories.Implementations;
-using OnlineShopping.Business.Interfaces;
-using OnlineShopping.Business.Implementations;
-using OnlineShoppingWebAPI.Extensions;
 
 namespace OnlineShoppingWebAPI
 {
@@ -37,7 +37,7 @@ namespace OnlineShoppingWebAPI
 		{
 			services.AddControllers();
 			//Inject AppSettings
-			services.Configure<ApplicationSettingsDTO>(Configuration.GetSection("ApplicationSettings"));			
+			services.Configure<ApplicationSettingsDTO>(Configuration.GetSection("ApplicationSettings"));
 
 			services.AddDbContext<OnlineShoppingDBContext>(options =>
 			options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
@@ -95,7 +95,20 @@ namespace OnlineShoppingWebAPI
 			services.AddScoped<ILoginService, LoginService>();
 			//// Inject register service 
 			services.AddScoped<IRegistrationService, RegistrationService>();
-		}
+            //// Inject Repository Account  Repository
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            //// Inject Checkout service 
+            services.AddScoped<ICheckoutService, CheckoutService>();
+            //// Inject Repository Order  Repository
+            services.AddScoped<IOrderRepository, OrderRepository>();
+            //// Inject Repository OrderLineItems  Repository
+            services.AddScoped<IOrderLineItemsRepository, OrderLineItemsRepository>();
+            //// Inject Repository Payment  Repository
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+
+            services.AddControllers().AddNewtonsoftJson(options =>
+            options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+        }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)

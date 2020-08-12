@@ -10,9 +10,12 @@ using System.Threading.Tasks;
 
 namespace OnlineShopping.NUnitTest
 {
+    /// <summary>
+    /// Login and Register Unit tests
+    /// </summary>
 	[TestFixture]
 	public class LoginRegisterUnitTest
-	{	
+	{
 
 		private IOptions<ApplicationSettingsDTO> _options;
 
@@ -20,17 +23,17 @@ namespace OnlineShopping.NUnitTest
 		public void Setup()
 		{
 			// mock the settings here
-			var applicationOptions = new ApplicationSettingsDTO() { JWT_Secret = "1234567890123456", Client_URL= "http://localhost:4200/" };
+			var applicationOptions = new ApplicationSettingsDTO() { JWT_Secret = "1234567890123456", Client_URL = "http://localhost:4200/" };
 
 			_options = Options.Create(applicationOptions);
-			var user = new ApplicationUser();			
+			var user = new ApplicationUser();
 
 		}
 
 		[TearDown]
 		public void Teardown()
 		{
-			//ToDo:
+
 		}
 
 
@@ -38,7 +41,7 @@ namespace OnlineShopping.NUnitTest
 		/// Login Test
 		/// </summary>
 		[Test]
-		public void Test_Login()
+		public void Test_Login_Result()
 		{
 			var loginDto = new LoginDTO()
 			{
@@ -47,9 +50,10 @@ namespace OnlineShopping.NUnitTest
 
 			};
 
-			var applicationUser = new ApplicationUser { 
+			var applicationUser = new ApplicationUser
+			{
 				FullName = "qwe rty",
-				UserName = "achinirr" ,
+				UserName = "achinirr",
 				PasswordHash = "AQAAAAEAACcQAAAAEFhb4f6tea+M5ljLQQv6paGE6/eo+IHQmiD0vlNdhJ66vPRY0rpFdoCW9XoeYm5/DQ==",
 				Email = "qwe@gmail.com",
 				EmailConfirmed = true,
@@ -61,14 +65,14 @@ namespace OnlineShopping.NUnitTest
 			var userManager = MockUserManager(applicationUserlist);
 			userManager.Setup(x => x.FindByNameAsync(It.IsAny<string>())).Returns(Task.FromResult(applicationUser));
 			userManager.Setup(x => x.CheckPasswordAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>())).Returns(Task.FromResult(true));
-			userManager.Setup(x => x.FindByIdAsync(It.IsAny<string>())).Returns(Task.FromResult(applicationUser)); 
+			userManager.Setup(x => x.FindByIdAsync(It.IsAny<string>())).Returns(Task.FromResult(applicationUser));
 			//Arrange
 			var loginService = new LoginService(userManager.Object, _options);
 			var result = loginService.Login(loginDto);
 
 			//Arrest
 			Assert.IsTrue(result != null);
-			
+
 		}
 
 		public static Mock<UserManager<TUser>> MockUserManager<TUser>(List<TUser> ls) where TUser : class
@@ -81,7 +85,7 @@ namespace OnlineShopping.NUnitTest
 			userManager.Setup(x => x.DeleteAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
 			userManager.Setup(x => x.CreateAsync(It.IsAny<TUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<TUser, string>((x, y) => ls.Add(x));
 			userManager.Setup(x => x.UpdateAsync(It.IsAny<TUser>())).ReturnsAsync(IdentityResult.Success);
-			
+
 
 			return userManager;
 		}
@@ -90,20 +94,20 @@ namespace OnlineShopping.NUnitTest
 		/// Register Test
 		/// </summary>
 		[Test]
-		public void Test_Register()
+		public void Test_Register_Result()
 		{
 			var applicationDto = new ApplicationUserDTO()
-			{				
+			{
 				UserName = "randunu",
 				Password = "Qwwe@123",
 				Email = "ran@gmail.com",
 				FullName = "ran rty",
-			};		
+			};
 
-			var applicationUserList = new List<ApplicationUser>();		
+			var applicationUserList = new List<ApplicationUser>();
 			var userManager = MockUserManager(applicationUserList);
 			userManager.Setup(x => x.CreateAsync(It.IsAny<ApplicationUser>(), It.IsAny<string>())).ReturnsAsync(IdentityResult.Success).Callback<ApplicationUser, string>((x, y) => applicationUserList.Add(x));
-			
+
 			//Arrange
 			var registerService = new RegistrationService(userManager.Object, _options);
 			var result = registerService.Register(applicationDto);
