@@ -25,14 +25,14 @@ namespace OnlineShoppingWebAPI.Extensions
 					if (contextFeature != null)
 					{
 						Log.Error($"Something went wrong: {contextFeature.Error}");
+                        var errorDescription = contextFeature.Error;
 
-						await context.Response.WriteAsync(new ErrorDetails()
+                        await context.Response.WriteAsync(new ErrorDetails()
 						{
-
 							StatusCode = context.Response.StatusCode,
-							ErrorDescription = "Internal Server Error.",
-							Data = null
-						}.ToString()); ;
+							ErrorDescription = errorDescription.ToString(),
+							Data = "Something went wrong"
+                        }.ToString()); ;
 					}
 				});
 			});

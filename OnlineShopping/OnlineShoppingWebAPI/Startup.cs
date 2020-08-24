@@ -106,6 +106,12 @@ namespace OnlineShoppingWebAPI
             //// Inject Repository Payment  Repository
             services.AddScoped<IPaymentRepository, PaymentRepository>();
 
+            ///Add Email settings
+            services.Configure<MailSettingsDTO>(Configuration.GetSection("MailSettings"));
+
+            ///Add Eamil service
+            services.AddTransient<IEmailService, EmailService>();
+
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
         }

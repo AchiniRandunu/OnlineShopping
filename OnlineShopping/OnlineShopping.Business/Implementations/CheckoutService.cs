@@ -10,6 +10,9 @@ using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Implementations
 {
+    /// <summary>
+    /// Checkout Service
+    /// </summary>
 	public class CheckoutService : ICheckoutService
 	{
 		private readonly IMapper _mapper = null;
@@ -29,6 +32,11 @@ namespace OnlineShopping.Business.Implementations
 			_userManager = userManager;
 		}
 
+        /// <summary>
+        /// Save Order details
+        /// </summary>
+        /// <param name="orderShippingPaymentDto"></param>
+        /// <returns></returns>
 		public async Task<object> SaveOrder(OrderShippingPaymentDTO orderShippingPaymentDto)
 		{
             var user = await _userManager.FindByNameAsync(orderShippingPaymentDto.UserName);

@@ -6,6 +6,9 @@ using System.Net;
 
 namespace OnlineShoppingWebAPI.Controllers
 {
+    /// <summary>
+    /// Checkout Controller
+    /// </summary>
 	[Route("api/[controller]")]
 	[ApiController]
 	public class CheckoutController : ControllerBase
@@ -21,8 +24,7 @@ namespace OnlineShoppingWebAPI.Controllers
 		/// </summary>
 		/// <param name="orderDTO"></param>
 		/// <returns></returns>
-		[HttpPost]
-		[Route("SaveOrder")]
+		[HttpPost]		
 		public ResponseDTO SaveOrder(OrderShippingPaymentDTO orderShippingPaymentDTO)
 		{
 			var result = _checkoutService.SaveOrder(orderShippingPaymentDTO);
