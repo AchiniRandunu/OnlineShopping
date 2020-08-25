@@ -1,4 +1,5 @@
 ﻿using OnlineShopping.DTO;
+using System;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Interfaces
@@ -13,7 +14,7 @@ namespace OnlineShopping.Business.Interfaces
         /// </summary>
         /// <param name="orderDto"></param>
         /// <returns></returns>
-		Task<object> SaveOrder(OrderShippingPaymentDTO orderDto);
+		Task<Object> SaveOrder(OrderShippingPaymentDTO orderDto);
 
 	}
 }

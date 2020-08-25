@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OnlineShopping.Business.Interfaces;
@@ -27,24 +28,28 @@ namespace OnlineShoppingWebAPI.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("SendEmail")]
-        public async Task<Object> SendMail(MailRequestDTO request)
+        public ResponseDTO SendMail(MailRequestDTO request)
         {
-            try
+            var result =  _mailService.SendEmailAsync(request);
+            if (result != null)
             {
-                var result= await _mailService.SendEmailAsync(request);
-                if (result != null)
+                Log.Information("Sending Bill is completed!");
+                return new ResponseDTO()
                 {
-                    Log.Information("send Email completed!");
-                    
-
-                }
-                return Ok(result);
+                    Data = result,
+                    ErrorDescription = "",
+                    Statuscode = "",
+                };
             }
-            catch (Exception ex)
-            {
-                throw;
-            }
+            else
+                return new ResponseDTO()
+                {
+                    Data = "",
+                    ErrorDescription = "Sending Bill is Failed!",
+                    Statuscode = HttpStatusCode.BadRequest.ToString(),
+                };
 
         }
+            
     }
 }
