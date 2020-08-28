@@ -13,5 +13,6 @@ namespace OnlineShopping.DTO
 		public double TotalPrice { get; set; }
 		public string PaymentStatus { get; set; }
 		public string PaymentMethod { get; set; }
-	}
+        public int OrderID { get; set; }
+    }
 }
