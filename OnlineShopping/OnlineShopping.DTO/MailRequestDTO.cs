@@ -1,10 +1,11 @@
 ﻿using Microsoft.AspNetCore.Http;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace OnlineShopping.DTO
 {
+    /// <summary>
+    /// Email request Dto
+    /// </summary>
     public class MailRequestDTO
     {
         public string ToEmail { get; set; }

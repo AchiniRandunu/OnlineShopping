@@ -7,6 +7,9 @@ using System.Collections.Generic;
 
 namespace OnlineShopping.NUnitTest
 {
+    /// <summary>
+    /// Email unit test
+    /// </summary>
     [TestFixture]
     public class EmailUnitTest
     {
@@ -26,6 +29,9 @@ namespace OnlineShopping.NUnitTest
 
         }
 
+        /// <summary>
+        /// Test sending email
+        /// </summary>
         [Test]
         public void Test_Sending_Email()
         {      

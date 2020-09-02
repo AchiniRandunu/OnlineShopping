@@ -57,15 +57,13 @@ namespace OnlineShopping.Business.Implementations
 			 var orderId =_orderRepository.Save(order).Id;
 
             //save order line items
-
             foreach (var item in _mapper.Map<IList<OrderLineItem>>(orderShippingPaymentDto.OrderLineItems))
             {
                 item.OrderID = orderId;
                 _orderLineItemsRepository.Save(item);
             }
 
-            //Save payment details
-            
+            //Save payment details            
             var payment = new Payment
             {
                 PaidDate = DateTime.UtcNow,
@@ -81,8 +79,5 @@ namespace OnlineShopping.Business.Implementations
 
             return "Successful Saved";
 		}
-
-	}
-
-    
+	}    
 }

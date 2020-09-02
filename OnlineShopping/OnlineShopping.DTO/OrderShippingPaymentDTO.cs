@@ -3,6 +3,9 @@ using System.Collections.Generic;
 
 namespace OnlineShopping.DTO
 {
+    /// <summary>
+    /// Order Shipping Payment Dto
+    /// </summary>
 	public class OrderShippingPaymentDTO
 	{
 		public string FullName { get; set; }

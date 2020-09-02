@@ -8,12 +8,5 @@ namespace OnlineShopping.Data.Repositories.Interfaces
 	/// </summary>
 	public interface IProductRepository : IRepository<Product>
 	{
-		/// <summary>
-		/// Get all Products
-		/// </summary>
-		/// <returns></returns>
-		//IQueryable<Product> GetAllProducts();
-
-
 	}
 }

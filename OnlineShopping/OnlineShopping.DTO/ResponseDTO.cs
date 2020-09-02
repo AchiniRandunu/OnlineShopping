@@ -2,6 +2,9 @@
 
 namespace OnlineShopping.DTO
 {
+    /// <summary>
+    /// Response Dto
+    /// </summary>
 	public class ResponseDTO
 	{
 		public Object Data { get; set; }

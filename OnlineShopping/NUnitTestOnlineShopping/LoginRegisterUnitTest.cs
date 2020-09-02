@@ -71,7 +71,7 @@ namespace OnlineShopping.NUnitTest
 			var result = loginService.Login(loginDto);
 
 			//Arrest
-			Assert.IsTrue(result != null);
+			Assert.IsTrue(result.Result != null);
 
 		}
 
@@ -113,7 +113,7 @@ namespace OnlineShopping.NUnitTest
 			var result = registerService.Register(applicationDto);
 
 			//Arrest
-			Assert.IsTrue(result != null);
+			Assert.IsTrue(result.Result != null);
 
 		}
 

@@ -1,5 +1,6 @@
 ﻿using System.Net;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Routing;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
 using Serilog;
@@ -7,31 +8,31 @@ using Serilog;
 namespace OnlineShoppingWebAPI.Controllers
 {
     /// <summary>
-    /// Email Controller
+    /// Payment Controller
     /// </summary>
     [Route("api/[controller]")]
     [ApiController]
-    public class EmailController : ControllerBase
+    public class PaymentController : ControllerBase
     {
-        private readonly IEmailService _mailService;
-        public EmailController(IEmailService mailService)
+        private readonly IPaymentService _paymentService = null;
+        public PaymentController(IPaymentService paymentService)
         {
-            _mailService = mailService;
+            _paymentService = paymentService;
         }
 
         /// <summary>
-        /// Send Email
+        /// Get payment details by user
         /// </summary>
-        /// <param name="request"></param>
+        /// <param name="userName"></param>
         /// <returns></returns>
-        [HttpPost]
-        [Route("SendEmail")]
-        public ResponseDTO SendMail(MailRequestDTO request)
+        [HttpGet]
+        [Route ("GetPaymentByUser/{userName}")]
+        public ResponseDTO GetPaymentsByUser(string userName)
         {
-            var result =  _mailService.SendEmailAsync(request);
+            var result = _paymentService.GetPaymentsByUserID(userName).Result;
             if (result != null)
             {
-                Log.Information("Sending Bill is completed!");
+                Log.Information("Get Payment details by user completed!");
                 return new ResponseDTO()
                 {
                     Data = result,
@@ -43,11 +44,10 @@ namespace OnlineShoppingWebAPI.Controllers
                 return new ResponseDTO()
                 {
                     Data = "",
-                    ErrorDescription = "Sending Bill is Failed!",
+                    ErrorDescription = "Get Payment details by user Failed!",
                     Statuscode = HttpStatusCode.BadRequest.ToString(),
                 };
 
         }
-            
     }
 }

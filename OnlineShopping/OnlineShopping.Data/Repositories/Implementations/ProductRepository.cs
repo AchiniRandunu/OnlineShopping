@@ -13,15 +13,6 @@ namespace OnlineShopping.Data.Repositories.Implementations
 		public ProductRepository(OnlineShoppingDBContext dbContext) : base(dbContext)
 		{
 			_dbContext = dbContext;
-		}
-
-		/// <summary>
-		/// Get all products
-		/// </summary>
-		/// <returns></returns>
-		//IQueryable<Product> IProductRepository.GetAllProducts()
-		//{			
-		//	return _dbContext.Products.AsQueryable();				
-		//}
+		}	
 	}
 }

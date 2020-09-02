@@ -105,6 +105,8 @@ namespace OnlineShoppingWebAPI
             services.AddScoped<IOrderLineItemsRepository, OrderLineItemsRepository>();
             //// Inject Repository Payment  Repository
             services.AddScoped<IPaymentRepository, PaymentRepository>();
+            //// Inject Payment service 
+            services.AddScoped<IPaymentService, PaymentService>();
 
             ///Add Email settings
             services.Configure<MailSettingsDTO>(Configuration.GetSection("MailSettings"));
@@ -114,13 +116,28 @@ namespace OnlineShoppingWebAPI
 
             services.AddControllers().AddNewtonsoftJson(options =>
             options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
+
+            // Register the Swagger generator, defining 1 or more Swagger documents
+            services.AddSwaggerGen();
         }
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, Microsoft.AspNetCore.Hosting.IHostingEnvironment env)
 		{
+            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            app.UseSwagger(c =>
+            {
+                c.SerializeAsV2 = true;
+            });
 
-			app.Use(async (ctx, next) =>
+            // Enable middleware to serve swagger-ui (HTML, JS, CSS, etc.),
+            // specifying the Swagger JSON endpoint.
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Online Shopping API V1");
+            });
+
+            app.Use(async (ctx, next) =>
 			{
 				await next();
 				if (ctx.Response.StatusCode == 204)
@@ -140,8 +157,9 @@ namespace OnlineShoppingWebAPI
 			.AllowAnyMethod()
 
 			);
+  
 
-			app.UseAuthentication();
+            app.UseAuthentication();
 			app.UseSerilogRequestLogging();
 
 			//error handling static method injecting
@@ -153,7 +171,8 @@ namespace OnlineShoppingWebAPI
 			app.UseEndpoints(endpoints =>
 			{
 				endpoints.MapControllers();
-			});
-		}
-	}
+			});  
+
+        }
+    }
 }

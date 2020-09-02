@@ -13,6 +13,9 @@ using System.Threading.Tasks;
 
 namespace OnlineShopping.NUnitTest
 {
+    /// <summary>
+    /// Payment unit test
+    /// </summary>
     [TestFixture]
     public class PaymentUnitTest
     {
@@ -77,6 +80,9 @@ namespace OnlineShopping.NUnitTest
 
         }
 
+        /// <summary>
+        /// Test get payment by user
+        /// </summary>
         [Test]
         public void Test_GetPayment_By_User()
         {

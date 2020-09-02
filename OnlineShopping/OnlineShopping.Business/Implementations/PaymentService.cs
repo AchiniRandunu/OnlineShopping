@@ -4,10 +4,8 @@ using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data.Entities;
 using OnlineShopping.Data.Repositories.Interfaces;
 using OnlineShopping.DTO;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Implementations
