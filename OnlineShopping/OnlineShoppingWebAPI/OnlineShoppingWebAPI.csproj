@@ -29,5 +29,11 @@
     <ProjectReference Include="..\OnlineShopping.DTO\OnlineShopping.DTO.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="BillEmailTemplate.html">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 
 </Project>

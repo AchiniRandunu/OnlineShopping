@@ -12,5 +12,7 @@ namespace OnlineShopping.DTO
         public string Subject { get; set; }
         public IList<OrderLineItemDTO> BodyProducts { get; set; }
         public List<IFormFile> Attachments { get; set; }
+        public string UserName { get; set; }
+
     }
 }

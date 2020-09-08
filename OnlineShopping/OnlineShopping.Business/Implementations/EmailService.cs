@@ -6,6 +6,7 @@ using System.Data;
 using System.IO;
 using System.Net;
 using System.Net.Mail;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,9 +18,11 @@ namespace OnlineShopping.Business.Implementations
     public class EmailService : IEmailService
     {
         private readonly MailSettingsDTO _mailSettings;
-        public EmailService(IOptions<MailSettingsDTO> mailSettings)
+        private readonly IPaymentService _paymentService;
+        public EmailService(IOptions<MailSettingsDTO> mailSettings, IPaymentService paymentService)
         {
             _mailSettings = mailSettings.Value;
+            _paymentService = paymentService;
         }
 
         /// <summary>
@@ -29,32 +32,11 @@ namespace OnlineShopping.Business.Implementations
         /// <returns></returns>
         public async Task<Object> SendEmailAsync(MailRequestDTO mailRequest)
         {
-            double total = 0.0;            
 
-            StringBuilder strHTMLBuilder = new StringBuilder();
-            DataTable dt = new DataTable();
-
-            dt.Columns.Add("Item", typeof(string));
-            dt.Columns.Add("Price", typeof(string));
-            dt.Columns.Add("Quantity", typeof(string));
-            dt.Columns.Add("Sub_Total", typeof(string));
-
-
-            foreach (var item in mailRequest.BodyProducts)
-            {
-             
-                dt.Rows.Add(item.ProductName, item.Price.ToString(), item.Quantity.ToString(), (item.Quantity * item.Price).ToString());
-                total = total + (item.Quantity * item.Price);
-
-            }
-
-            var MailText = ExportDatatableToHtml(dt);            
-            MailText = MailText.Replace("[total]", total.ToString());
-
-
+            var mailBody = GetMailBody(mailRequest);
             MailMessage message = new MailMessage();
             SmtpClient smtp = new SmtpClient();
-            message.From = new MailAddress(_mailSettings.Mail, _mailSettings.DisplayName);
+            message.From = new MailAddress(_mailSettings.Mail);
             message.To.Add(new MailAddress(mailRequest.ToEmail));
             message.Subject = mailRequest.Subject;
             if (mailRequest.Attachments != null)
@@ -67,22 +49,21 @@ namespace OnlineShopping.Business.Implementations
                         {
                             file.CopyTo(ms);
                             var fileBytes = ms.ToArray();
-                            Attachment att = new Attachment(new MemoryStream(fileBytes), file.FileName);
-                            message.Attachments.Add(att);
+                            Attachment attachment = new Attachment(new MemoryStream(fileBytes), file.FileName);
+                            message.Attachments.Add(attachment);
                         }
                     }
                 }
             }
 
-           
             message.IsBodyHtml = true;
-            message.Body = MailText;   
+            message.Body = mailBody;
 
             smtp.Port = _mailSettings.Port;
             smtp.Host = _mailSettings.Host;
-            smtp.EnableSsl = true;
+            smtp.EnableSsl = false;
             smtp.UseDefaultCredentials = false;
-            smtp.Credentials = new NetworkCredential(_mailSettings.Mail, _mailSettings.Password);
+            smtp.Credentials = new NetworkCredential(_mailSettings.UserName, _mailSettings.Password);
             smtp.DeliveryMethod = SmtpDeliveryMethod.Network;
             await smtp.SendMailAsync(message);
 
@@ -90,70 +71,33 @@ namespace OnlineShopping.Business.Implementations
 
         }
 
-        /// <summary>
-        /// Generate HTML Email view
-        /// </summary>
-        /// <param name="dt"></param>
-        /// <returns></returns>
-        static string ExportDatatableToHtml(DataTable dt)
+        private string GetMailBody(MailRequestDTO mailRequest)
         {
-            StringBuilder strHTMLBuilder = new StringBuilder();
-            strHTMLBuilder.Append("<html >");
-            strHTMLBuilder.Append("<head>");
-            strHTMLBuilder.Append("</head>");
-            strHTMLBuilder.Append("<body>");
-            strHTMLBuilder.Append("<h2>");
-            strHTMLBuilder.Append("Online Shopping - Bill Summary");
-            strHTMLBuilder.Append("</h2>");
-            strHTMLBuilder.Append("<hr/>");
-            strHTMLBuilder.Append("<table border='0px'; width= 2000 % '>");
-            strHTMLBuilder.Append("<tr >");
-            foreach (DataColumn myColumn in dt.Columns)
+            var absolutePath = Path.GetDirectoryName(Assembly.GetEntryAssembly()?.Location);
+            var templateFilePath = Path.Combine(absolutePath, "BillEmailTemplate.html");
+            var mailBody = string.Empty;
+            using (var streamReader = new StreamReader(templateFilePath))
+                mailBody = streamReader.ReadToEnd();
+
+            var orderId = _paymentService.GetOrderIDByUserName(mailRequest.UserName).Result;
+            double total = 0.0;
+            mailBody = mailBody.Replace("{#OrderID}", orderId.ToString("D8"));
+            var products = string.Empty;
+
+            foreach (var item in mailRequest.BodyProducts)
             {
-                strHTMLBuilder.Append("<td >");
-                strHTMLBuilder.Append(myColumn.ColumnName);
-                strHTMLBuilder.Append("</td>");
+                var cost = (item.Quantity * item.Price).ToString("0.00");
+                products += $@"<tr>
+                                        <td width='75%' align='left' style='font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;'> {item.ProductName} ({item.Quantity}) </td>
+                                        <td width='25%' align='left' style='font-family: Open Sans, Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 400; line-height: 24px; padding: 15px 10px 5px 10px;'> ${cost} </td>
+                                  </tr>";
+                total = total + (item.Quantity * item.Price);
             }
-            strHTMLBuilder.Append("</tr>");
-
-            foreach (DataRow myRow in dt.Rows)
-            {
-                strHTMLBuilder.Append("<tr >");
-                foreach (DataColumn myColumn in dt.Columns)
-                {
-                    strHTMLBuilder.Append("<td >");
-                    strHTMLBuilder.Append(myRow[myColumn.ColumnName].ToString());
-                    strHTMLBuilder.Append("</td>");
-
-                }
-                strHTMLBuilder.Append("</tr>");
-            }
-
-            strHTMLBuilder.Append("<tr >");
-            strHTMLBuilder.Append("<td colspan='3', align='right'>");
-            strHTMLBuilder.Append("Tax : Free");
-            strHTMLBuilder.Append("</td>");        
-            strHTMLBuilder.Append("</tr>");
-
-            strHTMLBuilder.Append("<tr >");
-            strHTMLBuilder.Append("<td colspan='3', align='right'>");
-            strHTMLBuilder.Append("Delivery : Free");
-            strHTMLBuilder.Append("</td>");
-            strHTMLBuilder.Append("</tr>");
-
-            strHTMLBuilder.Append("<tr >");
-            strHTMLBuilder.Append("<td colspan='3', align='right' >");
-            strHTMLBuilder.Append("Total Price : [total]");
-            strHTMLBuilder.Append("</td>");
-            strHTMLBuilder.Append("</tr>");
-          
-            strHTMLBuilder.Append("</table>");
-            strHTMLBuilder.Append("</body>");
-            strHTMLBuilder.Append("</html>");
-
-            string Htmltext = strHTMLBuilder.ToString();
-            return Htmltext;
+            mailBody = mailBody.Replace("{#Products}", products);
+            mailBody = mailBody.Replace("{#TotalCost}", total.ToString("0.00"));
+            return mailBody;
         }
-    }   
+        
+    }
 
 }

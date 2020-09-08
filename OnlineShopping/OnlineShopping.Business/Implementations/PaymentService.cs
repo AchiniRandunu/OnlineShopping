@@ -40,5 +40,20 @@ namespace OnlineShopping.Business.Implementations
 
            
         }
+
+        /// <summary>
+        /// Get Order Id by username
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+        public async Task<int> GetOrderIDByUserName(string userName)
+        {
+            var user = await _userManager.FindByNameAsync(userName);
+            var dto= _paymentRepository.GetAll().Result.ToList()
+                .Where(p => p.UserID == user.Id).Select(v => _mapper.Map<PaymentDTO>(v)).LastOrDefault();
+
+            return dto.OrderID;
+          
+        }
     }
 }
