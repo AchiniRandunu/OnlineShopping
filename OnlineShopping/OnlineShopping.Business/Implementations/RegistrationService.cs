@@ -3,6 +3,7 @@ using Microsoft.Extensions.Options;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data.Entities;
 using OnlineShopping.DTO;
+using System;
 using System.Threading.Tasks;
 
 namespace OnlineShopping.Business.Implementations
@@ -36,6 +37,10 @@ namespace OnlineShopping.Business.Implementations
 			};
 
 			var result = await _userManager.CreateAsync(applicationUser, applicationUserDto.Password);
+            if(result == null)
+            {
+                throw new ArgumentException("Invalid User!");
+            }
 			return (result);
 
 		}

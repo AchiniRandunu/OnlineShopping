@@ -4,6 +4,7 @@ using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data.Entities;
 using OnlineShopping.Data.Repositories.Interfaces;
 using OnlineShopping.DTO;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -34,11 +35,14 @@ namespace OnlineShopping.Business.Implementations
         {
 
             var user = await _userManager.FindByNameAsync(userName);
-            var res = _paymentRepository.GetAll().Result.ToList()
-                .Where(p => p.UserID == user.Id).Select(v => _mapper.Map<PaymentDTO>(v)).ToList();
-            return res;
-
-           
+            if (user != null)
+            {
+                var res = _paymentRepository.GetAll().Result.ToList()
+             .Where(p => p.UserID == user.Id).Select(v => _mapper.Map<PaymentDTO>(v)).ToList();
+                return res;
+            }
+            else
+                throw new ArgumentException("Invalid user");           
         }
 
         /// <summary>
@@ -49,10 +53,15 @@ namespace OnlineShopping.Business.Implementations
         public async Task<int> GetOrderIDByUserName(string userName)
         {
             var user = await _userManager.FindByNameAsync(userName);
-            var dto= _paymentRepository.GetAll().Result.ToList()
-                .Where(p => p.UserID == user.Id).Select(v => _mapper.Map<PaymentDTO>(v)).LastOrDefault();
+            if (user != null)
+            {
+                var dto = _paymentRepository.GetAll().Result.ToList()
+               .Where(p => p.UserID == user.Id).Select(v => _mapper.Map<PaymentDTO>(v)).LastOrDefault();
 
-            return dto.OrderID;
+                return dto.OrderID;
+            }
+            else
+                throw new ArgumentException("Invalid User !");
           
         }
     }

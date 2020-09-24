@@ -1,6 +1,8 @@
 ﻿using Microsoft.Extensions.Options;
+using Moq;
 using NUnit.Framework;
 using OnlineShopping.Business.Implementations;
+using OnlineShopping.Business.Interfaces;
 using OnlineShopping.DTO;
 using System.Collections.Generic;
 
@@ -15,18 +17,19 @@ namespace OnlineShopping.NUnitTest
     {
         private IOptions<MailSettingsDTO> _options;
         private IList<OrderLineItemDTO> orderLineItems;
+        private Mock<IPaymentService> paymentService;
         [SetUp]
         public void setup()
         {
             // mock the settings here
             var emailOptions = new MailSettingsDTO() { Mail= "achi.testforemail@gmail.com",
-                DisplayName= "Achini Randunu",
+               
                 Password= "Test@123",
                 Host="smtp.gmail.com",
                 Port = 587};
 
             _options = Options.Create(emailOptions);
-
+            paymentService = new Mock<IPaymentService>();
         }
 
         /// <summary>
@@ -58,11 +61,12 @@ namespace OnlineShopping.NUnitTest
                 ToEmail = "achi.testforemail@gmail.com",
                 Subject = "Test Sending Email",
                 Attachments = null,
-                BodyProducts = orderLineItems
+                BodyProducts = orderLineItems,
+                UserName = "achinirr"
             };            
 
             //Arrange
-            var emailService = new EmailService( _options);
+            var emailService = new EmailService( _options , paymentService.Object);
             var result = emailService.SendEmailAsync(requestDto);
 
             //Arrest

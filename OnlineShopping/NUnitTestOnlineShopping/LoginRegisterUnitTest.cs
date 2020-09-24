@@ -71,7 +71,7 @@ namespace OnlineShopping.NUnitTest
 			var result = loginService.Login(loginDto);
 
 			//Arrest
-			Assert.IsTrue(result.Result != null);
+			Assert.AreNotEqual("Username or password is incorrect.", result.Result);
 
 		}
 

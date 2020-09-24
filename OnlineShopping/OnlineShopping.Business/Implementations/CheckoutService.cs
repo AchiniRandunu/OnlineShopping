@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using IdentityServer4.Extensions;
 using Microsoft.AspNetCore.Identity;
 using OnlineShopping.Business.Interfaces;
 using OnlineShopping.Data.Entities;
@@ -38,7 +39,8 @@ namespace OnlineShopping.Business.Implementations
         /// <param name="orderShippingPaymentDto"></param>
         /// <returns></returns>
 		public async Task<object> SaveOrder(OrderShippingPaymentDTO orderShippingPaymentDto)
-		{
+		{   
+
             var user = await _userManager.FindByNameAsync(orderShippingPaymentDto.UserName);
             //save order
             var order = new Order
@@ -55,27 +57,41 @@ namespace OnlineShopping.Business.Implementations
 
             };
 			 var orderId =_orderRepository.Save(order).Id;
-
-            //save order line items
-            foreach (var item in _mapper.Map<IList<OrderLineItem>>(orderShippingPaymentDto.OrderLineItems))
+            if (orderShippingPaymentDto.OrderLineItems.Count <= 0)
             {
-                item.OrderID = orderId;
-                _orderLineItemsRepository.Save(item);
+                throw new InvalidOperationException("Can not save order Line items.");
             }
 
-            //Save payment details            
-            var payment = new Payment
+            else
             {
-                PaidDate = DateTime.UtcNow,
-                Description = "",
-                TotalPrice = order.TotalPrice,
-                PaymentStatus = orderShippingPaymentDto.PaymentStatus,
-                PaymentMethod = orderShippingPaymentDto.PaymentMethod,
-                OrderID = order.Id,
-                UserID = user.Id
+                //save order line items
+                foreach (var item in _mapper.Map<IList<OrderLineItem>>(orderShippingPaymentDto.OrderLineItems))
+                {
+                    item.OrderID = orderId;
+                    _orderLineItemsRepository.Save(item);
+                }
 
-            };
-            _paymentRepository.Save(payment);
+            }
+
+            if (!string.IsNullOrEmpty(user.Id))
+            {
+                //Save payment details            
+                var payment = new Payment
+                {
+                    PaidDate = DateTime.UtcNow,
+                    Description = "",
+                    TotalPrice = order.TotalPrice,
+                    PaymentStatus = orderShippingPaymentDto.PaymentStatus,
+                    PaymentMethod = orderShippingPaymentDto.PaymentMethod,
+                    OrderID = order.Id,
+                    UserID = user.Id
+
+                };
+                _paymentRepository.Save(payment);
+                throw new InvalidOperationException("Can not save payment details.");
+            }
+               
+                   
 
             return "Successful Saved";
 		}
