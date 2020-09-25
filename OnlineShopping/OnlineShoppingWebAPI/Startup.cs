@@ -152,7 +152,7 @@ namespace OnlineShoppingWebAPI
 			}
 
 			app.UseCors(builder =>
-			builder.WithOrigins(Configuration["ApplicationSettings:Client_URL"].ToString())
+			builder.AllowAnyOrigin()
 			.AllowAnyHeader()
 			.AllowAnyMethod()
 
